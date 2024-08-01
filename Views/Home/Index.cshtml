@@ -1,33 +1,72 @@
-﻿@{
+﻿@model Store_Management_System.Models.Item
+@{
     ViewBag.Title = "Home Page";
 }
 
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+    @using (Html.BeginForm("AddOrUpdate", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.item_id)
+        <section class="row" aria-labelledby="aspnetTitle">
+            <h1 id="title" class="mb-5">USER DETAILS</h1>
+            <h4 class="mb-2">User Form</h4>
+        </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
+        <div class="row mb-4">
+            <section class="col-md-6" aria-labelledby="gettingStartedTitle">
+                <label>Item Name: </label>
+                @Html.TextBoxFor(model => model.item_name, new { @class = "form-control w-100" })
+                @Html.ValidationMessageFor(model => model.item_name)
+            </section>
+            <section class="col-md-4" aria-labelledby="librariesTitle">
+                <label>Category Name: </label>
+                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.Category_list, "Text", "Value"), "--Select Category--", new { @class = "form-control w-100" })
+                @Html.ValidationMessageFor(model => model.Category)
+            </section>
+        </div>
+        <div class="row mb-4">
+            
+            <section class="col-md-6" aria-labelledby="hostingTitle">
+                <label>Rate: </label>
+                @Html.TextBoxFor(model => model.rate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.rate)
+
+            </section>
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <label>Balance Quantity: </label>
+                @Html.TextBoxFor(model => model.balance_Quantity, new { @class = "form-control" })
+            </section>
+        </div>
+            <div class="row mb-2">
+                <button class="btn btn-secondary" type="submit">Submit</button>
+            </div>
+        }
+    <table class=" table table-bordered">
+        <thead>
+            <tr>
+                <th>ITEM ID</th>
+                <th>ITEM NAME</th>
+                <th>ITEM CATEGORY</th>
+                <th>ITEM RATE</th>
+                <th>ITEM BALANCE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var content in ViewBag.Item_List)
+            {
+                <tr>
+                    <td>@content.item_id</td>
+                    <td>@content.item_name</td>
+                    <td>@content.Category</td>
+                    <td>@content.rate</td>
+                    <td>@content.balance_Quantity</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Index", new { item_id = content.item_id }) |
+                        @Html.ActionLink("Delete", "Delete", new { item_id = content.item_id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </main>
