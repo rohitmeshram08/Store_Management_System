@@ -153,18 +153,46 @@ namespace Store_Management_System.Controllers
         public ActionResult Transction()
         {
 
-            List<SelectListItem> list = new List<SelectListItem>()
-                 {
-                    new SelectListItem(){Text="ELECTRONICS",Value="ELECTRONICS"},
-                    new SelectListItem(){Text="STATIONARY",Value="STATIONARY"},
-                    new SelectListItem(){Text="CONSUMABLE",Value="CONSUMABLE"},
-                    new SelectListItem(){Text="FURNITURE",Value="FURNITURE"},
-                };
-            ViewBag.Category_list = list;
+            
+            ViewBag.TransactionDetails = Get_transactionDetails();
 
             ViewBag.Item_List = Get_item_Data();
 
             return View();
+        }
+
+        public List<Transaction> Get_transactionDetails()
+        {
+
+            connection= new SqlConnection(Connection_string);
+
+            string Query = "SELECT transaction_id as 'TRANSACTION ID',I.item_name as 'ITEM NAME' ,T.transaction_date as 'TRANSACTION DATE',\r\nD.Department_name as 'DEPARTMENT NAME',V.Vendor_name as 'VENDOR NAME',T.Quantity as 'QUANTITY'\r\nFROM tbl_transaction as T inner join \r\ntbl_item as I on T.item_id=I.item_id inner join \r\ntbl_department as D on T.department_id=D.department_id inner join \r\ntbl_vendor_master as V on  V.Vendor_id=T.Vendor_id ";
+
+            command = new SqlCommand(Query, connection);
+
+            List<Transaction> transactionsList = new List<Transaction>();
+
+
+            DataTable dataTable = new DataTable();  
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+            adapter.Fill(dataTable);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Transaction transaction = new Transaction()
+                {
+                    transaction_ID = Convert.ToInt32(row["TRANSACTION ID"]),
+                    Item_Name = Convert.ToString(row["ITEM NAME"]),
+                    transaction_date = Convert.ToDateTime(row["TRANSACTION DATE"]),
+                    Department_Name = Convert.ToString(row["DEPARTMENT NAME"]),
+                    Vendor_Name= Convert.ToString(row["VENDOR NAME"]),
+                    Quantity = Convert.ToInt32(row["QUANTITY"]),
+                };
+                transactionsList.Add(transaction);
+            }
+            return transactionsList;
         }
     }
 }

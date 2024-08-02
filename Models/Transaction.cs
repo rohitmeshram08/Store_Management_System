@@ -13,11 +13,16 @@ namespace Store_Management_System.Models
 
         public DateTime transaction_date { get; set;}
 
-        //
+        public string Item_Name { get; set;}
+
+
 
         public int department_id { get; set; }
+        public string Department_Name { get; set; }
 
         public int Vendor_id { get; set; }
+        public string Vendor_Name { get; set; }
+
 
 
         public int Quantity { get; set; }

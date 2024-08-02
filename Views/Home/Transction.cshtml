@@ -8,7 +8,7 @@
     {
         @Html.HiddenFor(model => model.transaction_ID)
         <section class="row" aria-labelledby="aspnetTitle">
-            <h1 id="title" class="mb-5">USER DETAILS</h1>
+            <h1 id="title" class="mb-5">TRANSACTION DETAILS</h1>
             <h4 class="mb-2">User Form</h4>
         </section>
 
@@ -47,20 +47,21 @@
                 <th>TRANSACTION  ID</th>
                 <th>TRANSACTION DATE</th>
                 <th>DEPARTMENT ID </th>
-                <th> VENDOR ID</th>
-                <th> QUANTITY</th>
+                <th>VENDOR ID</th>
+                <th>QUANTITY</th>
                 <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var content in ViewBag.Item_List)
+            @foreach (var content in ViewBag.TransactionDetails)
             {
                 <tr>
-                    <td>@content.item_id</td>
-                    <td>@content.item_name</td>
-                    <td>@content.Category</td>
-                    <td>@content.rate</td>
-                    <td>@content.balance_Quantity</td>
+                    <td>@content.transaction_ID</td>
+                    <td>@content.Item_Name</td>
+                    <td>@content.transaction_date</td>
+                    <td>@content.Department_Name</td>
+                    <td>@content.Vendor_Name</td>
+                    <td>@content.Quantity</td>
                     <td>
                         @Html.ActionLink("Edit", "Index", new { item_id = content.item_id }) |
                         @Html.ActionLink("Delete", "Delete", new { item_id = content.item_id })
