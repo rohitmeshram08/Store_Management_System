@@ -152,6 +152,18 @@ namespace Store_Management_System.Controllers
 
         public ActionResult Transction()
         {
+
+            List<SelectListItem> list = new List<SelectListItem>()
+                 {
+                    new SelectListItem(){Text="ELECTRONICS",Value="ELECTRONICS"},
+                    new SelectListItem(){Text="STATIONARY",Value="STATIONARY"},
+                    new SelectListItem(){Text="CONSUMABLE",Value="CONSUMABLE"},
+                    new SelectListItem(){Text="FURNITURE",Value="FURNITURE"},
+                };
+            ViewBag.Category_list = list;
+
+            ViewBag.Item_List = Get_item_Data();
+
             return View();
         }
     }
