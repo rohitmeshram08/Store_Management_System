@@ -1,4 +1,4 @@
-﻿@model Store_Management_System.Models.Item
+﻿@model Store_Management_System.Models.Transaction
 @{
     ViewBag.Title = "Home Page";
 }
@@ -6,7 +6,7 @@
 <main>
     @using (Html.BeginForm("AddOrUpdate", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        @Html.HiddenFor(model => model.item_id)
+        @Html.HiddenFor(model => model.transaction_ID)
         <section class="row" aria-labelledby="aspnetTitle">
             <h1 id="title" class="mb-5">USER DETAILS</h1>
             <h4 class="mb-2">User Form</h4>
@@ -15,26 +15,26 @@
         <div class="row mb-4">
             <section class="col-md-6" aria-labelledby="gettingStartedTitle">
                 <label>Item Name: </label>
-                @Html.TextBoxFor(model => model.item_name, new { @class = "form-control w-100" })
-                @Html.ValidationMessageFor(model => model.item_name)
+                @Html.TextBoxFor(model => model.transaction_date, new { @class = "form-control w-100" })
+                @Html.ValidationMessageFor(model => model.transaction_date)
             </section>
             <section class="col-md-4" aria-labelledby="librariesTitle">
                 <label>Category Name: </label>
-                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.Category_list, "Text", "Value"), "--Select Category--", new { @class = "form-control w-100" })
-                @Html.ValidationMessageFor(model => model.Category)
+                @Html.DropDownListFor(model => model.department_id, new SelectList(ViewBag.Category_list, "Text", "Value"), "--Select Category--", new { @class = "form-control w-100" })
+                @Html.ValidationMessageFor(model => model.department_id)
             </section>
         </div>
         <div class="row mb-4">
 
             <section class="col-md-6" aria-labelledby="hostingTitle">
                 <label>Rate: </label>
-                @Html.TextBoxFor(model => model.rate, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.rate)
+                @Html.TextBoxFor(model => model.Vendor_id, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Vendor_id)
 
             </section>
             <section class="col-md-4" aria-labelledby="gettingStartedTitle">
                 <label>Balance Quantity: </label>
-                @Html.TextBoxFor(model => model.balance_Quantity, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
             </section>
         </div>
         <div class="row mb-2">
@@ -44,11 +44,11 @@
     <table class=" table table-bordered">
         <thead>
             <tr>
-                <th>ITEM ID</th>
-                <th>ITEM NAME</th>
-                <th>ITEM CATEGORY</th>
-                <th>ITEM RATE</th>
-                <th>ITEM BALANCE</th>
+                <th>TRANSACTION  ID</th>
+                <th>TRANSACTION DATE</th>
+                <th>DEPARTMENT ID </th>
+                <th> VENDOR ID</th>
+                <th> QUANTITY</th>
                 <th>ACTION</th>
             </tr>
         </thead>
