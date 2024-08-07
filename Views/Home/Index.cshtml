@@ -20,7 +20,7 @@
             </section>
             <section class="col-md-4" aria-labelledby="librariesTitle">
                 <label>Category Name: </label>
-                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.Category_list, "Text", "Value"), "--Select Category--", new { @class = "form-control w-100" })
+                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.Category_list, "Text", "Value"), "--Select Category--", new { @class = "btn btn-secondary dropdown-toggle" })
                 @Html.ValidationMessageFor(model => model.Category)
             </section>
         </div>

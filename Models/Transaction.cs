@@ -15,6 +15,8 @@ namespace Store_Management_System.Models
 
         public string Item_Name { get; set;}
 
+        public string Item_ID { get; set;}
+
 
 
         public int department_id { get; set; }

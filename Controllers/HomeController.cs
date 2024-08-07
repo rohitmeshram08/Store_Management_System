@@ -150,15 +150,48 @@ namespace Store_Management_System.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Transction()
+        public ActionResult Transction( Transaction transaction_Model)
         {
+            if(transaction_Model.transaction_ID== 0)
+            {
+                ViewBag.TransactionDetails = Get_transactionDetails();
 
-            
-            ViewBag.TransactionDetails = Get_transactionDetails();
+                ViewBag.Department_List = GetDepartment_Details();
 
-            ViewBag.Item_List = Get_item_Data();
+                return View();
 
-            return View();
+            }
+            else
+            {
+                ViewBag.TransactionDetails = Get_transactionDetails();
+
+                ViewBag.Department_List = GetDepartment_Details();
+
+                connection = new SqlConnection (Connection_string);
+
+                string Query = $"SELECT transaction_id as 'TRANSACTION ID',I.item_name as 'ITEM NAME' ,T.transaction_date as 'TRANSACTION DATE',D.department_id as 'DepartmentId',D.Department_name as 'DepartmentName',V.Vendor_name as 'VENDOR NAME',T.Quantity as 'QUANTITY'FROM tbl_transaction as T inner join tbl_item as I on T.item_id=I.item_id inner join tbl_department as D on T.department_id=D.department_id inner join tbl_vendor_master as V on  V.Vendor_id=T.Vendor_id  where transaction_id={transaction_Model.transaction_ID} ";
+
+                command = new SqlCommand(Query, connection);
+
+                SqlDataAdapter AD = new SqlDataAdapter(command);
+
+                DataTable dt = new DataTable();
+
+                Transaction transaction = new Transaction();
+
+                AD.Fill(dt);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    transaction.transaction_ID = Convert.ToInt32(dr["TRANSACTION ID"]);
+                    transaction.department_id = Convert.ToInt32(dr["DepartmentId"]);
+                    transaction.Vendor_Name = Convert.ToString(dr["VENDOR NAME"]);
+                    transaction.Quantity = Convert.ToInt32(dr["QUANTITY"]);
+                    transaction.Department_Name = Convert.ToString(dr["DepartmentName"]);
+                }
+                return View(transaction);
+
+            }  
         }
 
         public List<Transaction> Get_transactionDetails()
@@ -193,6 +226,109 @@ namespace Store_Management_System.Controllers
                 transactionsList.Add(transaction);
             }
             return transactionsList;
+        }
+
+
+        public List<Department> GetDepartment_Details()
+        {
+
+            connection = new SqlConnection(Connection_string);
+
+            string Query = "SELECT * FROM tbl_department";
+ 
+
+            command = new SqlCommand(Query, connection);
+
+            List<Department> Department_details_LIST = new List<Department>();
+
+
+            DataTable dataTable = new DataTable();
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+            adapter.Fill(dataTable);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Department department = new Department() 
+                {
+                    DepartmentId = Convert.ToInt32(row["department_id"]),
+                    DepartmentName = Convert.ToString(row["Department_name"]),
+                    
+                };
+                Department_details_LIST.Add(department);
+            }
+            return Department_details_LIST;
+        }
+
+        public List<Vendor> Get_Vendor_Details()
+        {
+
+            connection = new SqlConnection(Connection_string);
+
+            string Query = "SELECT * FROM tbl_department";
+
+            command = new SqlCommand(Query, connection);
+
+            List<Vendor> Vendor_details_LIST = new List<Vendor>();
+
+
+            DataTable dataTable = new DataTable();
+
+            SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+            adapter.Fill(dataTable);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Vendor vendor= new Vendor()
+                {
+                    Vendor_Id = Convert.ToInt32(row["Vendor_id"]),
+                    Vendor_Name = Convert.ToString(row["Vendor_name"]),
+                };
+                Vendor_details_LIST.Add(vendor);
+            }
+            return Vendor_details_LIST;
+        }
+
+
+        public ActionResult AddOrUpdate(Transaction transaction)
+        {
+            if(transaction.transaction_ID == 0)
+            {
+                connection= new SqlConnection(Connection_string);
+
+                string query = $"INSERT INTO tbl_transaction VALUES({transaction.Item_ID},'{transaction.transaction_date}',{transaction.department_id},{transaction.Vendor_id},{transaction.Quantity})";
+
+                command = new SqlCommand(query, connection);
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+                return RedirectToAction("Transction");
+
+
+            }
+            else
+            {
+                connection = new SqlConnection (Connection_string);
+
+                string Query = $"";
+
+                command = new SqlCommand(Query, connection);
+
+                connection.Open ();
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+
+                return RedirectToAction("Transction");
+
+            }
         }
     }
 }
